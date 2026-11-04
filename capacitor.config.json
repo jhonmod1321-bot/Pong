@@ -1,0 +1,6 @@
+{
+  "appId": "com.ejemplo.pong",
+  "appName": "Pong",
+  "webDir": "www",
+  "backgroundColor": "#000000"
+}

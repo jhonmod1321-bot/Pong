@@ -1,0 +1,12 @@
+OPCION A - Sin instalar nada (GitHub):
+1. Crea un repositorio en github.com y sube todo el contenido de esta carpeta (incluida .github).
+2. Ve a la pestaña "Actions" > "Build APK" > espera ~5 min.
+3. Descarga el artefacto "pong-apk" (contiene app-debug.apk) e instálalo en tu celular.
+
+OPCION B - En tu PC (Node 20+, Android Studio/JDK 21):
+  npm install
+  npx cap add android
+  (en android/app/src/main/AndroidManifest.xml agrega android:screenOrientation="portrait" a la <activity>)
+  npx cap sync android
+  cd android && ./gradlew assembleDebug
+El APK queda en android/app/build/outputs/apk/debug/app-debug.apk
