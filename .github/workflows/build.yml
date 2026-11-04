@@ -18,6 +18,29 @@ jobs:
       - run: npx cap add android
       - name: Forzar orientación vertical
         run: sed -i 's/android:name=".MainActivity"/android:name=".MainActivity"\n            android:screenOrientation="portrait"/' android/app/src/main/AndroidManifest.xml
+      - name: Ícono propio
+        run: |
+          sudo apt-get install -y imagemagick
+          RES=android/app/src/main/res
+          draw() {
+            s=$1; out=$2; bg=$3
+            convert -size ${s}x${s} xc:$bg -fill white \
+              -draw "rectangle $((s*31/100)),$((s*29/100)) $((s*69/100)),$((s*34/100))" \
+              -draw "rectangle $((s*31/100)),$((s*66/100)) $((s*69/100)),$((s*71/100))" \
+              -draw "circle $((s*50/100)),$((s*50/100)) $((s*50/100)),$((s*56/100))" \
+              $out
+          }
+          mk() {
+            draw $2 $RES/mipmap-$1/ic_launcher.png black
+            draw $2 $RES/mipmap-$1/ic_launcher_round.png black
+            draw $3 $RES/mipmap-$1/ic_launcher_foreground.png none
+          }
+          mk mdpi 48 108
+          mk hdpi 72 162
+          mk xhdpi 96 216
+          mk xxhdpi 144 324
+          mk xxxhdpi 192 432
+          echo '<?xml version="1.0" encoding="utf-8"?><resources><color name="ic_launcher_background">#000000</color></resources>' > $RES/values/ic_launcher_background.xml
       - run: npx cap sync android
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
